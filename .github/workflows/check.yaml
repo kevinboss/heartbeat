@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - uses: nahsi/files-to-matrix@v1
-        id: jobs
+        id: hearts
         with:
           files: hearts/**
           settings: >-
@@ -32,11 +32,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tf: "${{ fromJSON(needs.matrix.outputs.hearts-matrix) }}"
+        hearts: "${{ fromJSON(needs.matrix.outputs.hearts-matrix) }}"
 
     defaults:
       run:
         working-directory: "hearts"
 
     steps:
-      - run: "echo ${{ matrix.tf.dir }}"
+      - run: "echo ${{ matrix.hearts.heart }}"
