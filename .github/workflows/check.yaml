@@ -56,7 +56,6 @@ jobs:
         with:
           repository: '${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}'
           path: 'repo'
-      - run: cd repo
       - id: latest-commit-date
-        run: echo "::set-output name=date::$(git log -1 --date=format:'%Y/%m/%d' --format='%ad')"
+        run: echo "::set-output name=date::$(git -C repo log -1 --date=format:'%Y/%m/%d' --format='%ad')"
       - run: echo ${{ steps.latest-commit-date.outputs.date }}
