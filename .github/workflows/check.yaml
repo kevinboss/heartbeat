@@ -34,9 +34,6 @@ jobs:
       matrix:
         hearts: "${{ fromJSON(needs.matrix.outputs.hearts-matrix) }}"
 
-    defaults:
-      run:
-        working-directory: "hearts"
-
     steps:
+      - uses: actions/checkout@v2
       - run: "echo ${{ matrix.hearts.heart }}"
