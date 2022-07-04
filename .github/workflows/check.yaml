@@ -59,3 +59,11 @@ jobs:
       - id: latest-commit-date
         run: echo "::set-output name=date::$(git -C repo log -1 --date=format:'%Y/%m/%d' --format='%ad')"
       - run: echo ${{ steps.latest-commit-date.outputs.date }}
+      - uses: actions-cool/issues-helper@v3
+        id: latest-issue-date
+        with:
+          actions: 'find-issues'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-creator: 'kevinboss'
+          title-includes: '${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}'
+      - run: echo ${{ fromJSON(steps.latest-issue-date.outputs.issues) }}
