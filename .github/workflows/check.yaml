@@ -40,13 +40,13 @@ jobs:
         id: owner
         uses: KJ002/read-yaml@main
         with:
-          file: '${{ matrix.hearts.heart }}'
+          file: 'hearts/${{ matrix.hearts.heart }}'
           key-path: '["owner"]'
       - name: read name
         id: name
         uses: KJ002/read-yaml@main
         with:
-          file: '${{ matrix.hearts.heart }}'
+          file: 'hearts/${{ matrix.hearts.heart }}'
           key-path: '["name"]'
 
       - name: show
