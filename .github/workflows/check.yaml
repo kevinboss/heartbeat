@@ -1,8 +1,8 @@
 name: check for heartbeats
 
 on:
-  schedule:
-  - cron: "0 0 * * *"
+ # schedule:
+ # - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
@@ -57,7 +57,7 @@ jobs:
           repository: '${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}'
           path: 'repo'
       - id: latest-commit-date
-        run: echo "::set-output name=date::$(git -C repo log -1 --date=format:'%Y/%m/%d' --format='%ad')"
+        run: echo "::set-output name=date::$(git -C repo log -1 --date=format:'%Y-%m-%d' --format='%ad')"
       - run: echo ${{ steps.latest-commit-date.outputs.date }}
       - uses: actions-cool/issues-helper@v3
         id: latest-issue-date
