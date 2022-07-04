@@ -50,4 +50,4 @@ jobs:
           key-path: '["name"]'
 
       - name: show
-        run: echo "${{ steps.yaml-data.outputs.owner }}/${{ steps.yaml-data.outputs.name }}"
+        run: echo "${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}"
