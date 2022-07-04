@@ -1,0 +1,42 @@
+name: check for heartbeats
+
+on:
+  schedule:
+  - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      hearts-matrix: "${{ steps.hearts.outputs.matrix }}"
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: nahsi/files-to-matrix@v1
+        id: jobs
+        with:
+          files: hearts/**
+          settings: >-
+            [
+              {
+                "name": "heart",
+                "level": 1
+              }
+            ]
+
+  check:
+    runs-on: ubuntu-latest
+    if: needs.matrix.outputs.hearts-matrix
+    needs: matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        tf: "${{ fromJSON(needs.matrix.outputs.hearts-matrix) }}"
+
+    defaults:
+      run:
+        working-directory: "hearts"
+
+    steps:
+      - run: "echo ${{ matrix.tf.dir }}"
