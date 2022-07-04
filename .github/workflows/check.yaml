@@ -36,4 +36,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - run: "echo ${{ matrix.hearts.heart }}"
+      - name: read owner
+        id: owner
+        uses: KJ002/read-yaml@main
+        with:
+          file: '${{ matrix.hearts.heart }}'
+          key-path: '["owner"]'
+      - name: read name
+        id: name
+        uses: KJ002/read-yaml@main
+        with:
+          file: '${{ matrix.hearts.heart }}'
+          key-path: '["name"]'
+
+      - name: show
+        run: echo "${{ steps.yaml-data.outputs.owner }}/${{ steps.yaml-data.outputs.name }}"
