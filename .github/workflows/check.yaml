@@ -11,8 +11,8 @@ jobs:
     outputs:
       hearts-matrix: "${{ steps.hearts.outputs.matrix }}"
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout kevinboss/heartbeat
+        uses: actions/checkout@v3
       - uses: nahsi/files-to-matrix@v1
         id: hearts
         with:
@@ -75,6 +75,17 @@ jobs:
           set: ${{ steps.latest-commit-date.outputs.data }}
           get: false
           append: false
+      - name: Set global git config
+        uses: oleksiyrudenko/gha-git-credentials@v2.1
+        with:
+          global: true
+          name: 'Kevin Boss'
+          email: 'kevin.boss@outlook.com'
+          actor: 'kevinboss'
+          token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Commit updated files
         if: ${{ steps.latest.outputs.data == null || steps.latest.outputs.data < steps.latest-commit-date.outputs.data }}
-        run: git -C repo add . && git -C repo commit -m "updated latest for hearts/${{ matrix.hearts.heart }}" && git -C repo push
+        run: |
+          git -C repo add .
+          git -C repo commit -m "updated latest for hearts/${{ matrix.hearts.heart }}"
+          git -C repo push
