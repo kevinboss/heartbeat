@@ -10,6 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Is hearbeat issue
+      id: is-heartbeat-issue
+      run: |
+        if [[ ${{ github.event.issue.title }} =~ ^Heartbeat for (.*)/(.*)$ ]]; then
+            echo ::set-output name=data::true
+            echo ${BASH_REMATCH[1]}${BASH_REMATCH[2]}
+        fi
     - name: Print comment body
       run: echo "$BODY"
       env:
