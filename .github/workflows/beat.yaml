@@ -10,7 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: $github
-      run:   echo "$GITHUB_CONTEXT"
+    - name: Print comment body
+      run: echo "$BODY"
       env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
+        BODY: ${{ github.event.comment.body }}
+    - name: Print issue title
+      run: echo "$TITLE"
+      env:
+        TITLE: ${{ github.event.comment.issue.title }}
