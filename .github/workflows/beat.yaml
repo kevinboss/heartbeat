@@ -13,7 +13,7 @@ jobs:
     - name: Is hearbeat issue
       id: is-heartbeat-issue
       run: |
-        if [[ '${{ github.event.issue.title }}' =~ ^Request[:space:]heartbeat[:space:]for[:space:](.*)/(.*)$ ]]; then
+        if [[ '${{ github.event.issue.title }}' =~ ^Request[[:space:]]heartbeat[[:space:]]for[[:space:]](.*)/(.*)$ ]]; then
             echo ::set-output name=flag::true
             echo ::set-output name=owner::${BASH_REMATCH[1]}
             echo ::set-output name=name::${BASH_REMATCH[2]}
