@@ -69,11 +69,11 @@ jobs:
           key-path: '["latest"]'
       - run: echo ${{ steps.latest.outputs.data }}
       - name: update latest
-        if: ${{ steps.latest.outputs.data == null || steps.latest.outputs.data < latest-commit-date.outputs.data }}
+        if: ${{ steps.latest.outputs.data == null || steps.latest.outputs.data < steps.latest-commit-date.outputs.data }}
         uses: endaft/action-yamler@v1.0.5
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
           path: latest
-          set: latest-commit-date.outputs.data
+          set: steps.latest-commit-date.outputs.data
           get: false
           append: false
