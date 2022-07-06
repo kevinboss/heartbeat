@@ -35,45 +35,45 @@ jobs:
         hearts: "${{ fromJSON(needs.matrix.outputs.hearts-matrix) }}"
 
     steps:
-      - name: checkout heartbeat
+      - name: Checkout kevinboss/heartbeat
         uses: actions/checkout@v3
         with:
           path: 'heartbeat'
-      - name: read owner
+      - name: Read owner from ${{ matrix.hearts.heart }}
         id: owner
         uses: KJ002/read-yaml@main
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
           key-path: '["owner"]'
-      - name: read name
+      - name: Read name from ${{ matrix.hearts.heart }}
         id: name
         uses: KJ002/read-yaml@main
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
           key-path: '["name"]'
-      - name: show
-        run: echo "${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}"
-      - name: checkout the hearts repo
+      - name: Checkout ${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}
         uses: actions/checkout@v3
         with:
           repository: '${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}'
           path: 'repo'
-      - name: read latest commit date
+      - name: Read latest commit date
         id: latest-commit-date
         run: echo "::set-output name=data::$(git -C repo log -1 --date=format:'%Y-%m-%d' --format='%ad')"
-      - name: read latest heartbeat
+      - name: Read latest from ${{ matrix.hearts.heart }}
         id: latest
         uses: KJ002/read-yaml@main
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
           key-path: '["latest"]'
-      - run: echo ${{ steps.latest.outputs.data }}
-      - name: update latest
+      - name: Update latest
         if: ${{ steps.latest.outputs.data == null || steps.latest.outputs.data < steps.latest-commit-date.outputs.data }}
         uses: endaft/action-yamler@v1.0.5
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
           path: latest
-          set: steps.latest-commit-date.outputs.data
+          set: ${{ steps.latest-commit-date.outputs.data }}
           get: false
           append: false
+      - name: Update latest
+        if: ${{ steps.latest.outputs.data == null || steps.latest.outputs.data < steps.latest-commit-date.outputs.data }}
+        uses: 
