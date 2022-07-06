@@ -20,9 +20,9 @@ jobs:
         fi
     - name: Print
       run: |
-        echo ${{ steps.is-heartbeat-issue.output.flag }}
-        echo ${{ steps.is-heartbeat-issue.output.owner }}
-        echo ${{ steps.is-heartbeat-issue.output.name }}
+        echo ${{ steps.is-heartbeat-issue.outputs.flag }}
+        echo ${{ steps.is-heartbeat-issue.outputs.owner }}
+        echo ${{ steps.is-heartbeat-issue.outputs.name }}
     - name: Print comment body
       run: echo "$BODY"
       env:
