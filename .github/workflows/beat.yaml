@@ -17,4 +17,4 @@ jobs:
     - name: Print issue title
       run: echo "$TITLE"
       env:
-        TITLE: ${{ github.event.comment.issue.title }}
+        TITLE: ${{ toJson(github.event.comment.issue) }}
