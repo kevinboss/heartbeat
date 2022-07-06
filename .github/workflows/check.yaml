@@ -86,6 +86,7 @@ jobs:
       - name: Commit updated files
         if: ${{ steps.latest.outputs.data == null || steps.latest.outputs.data < steps.latest-commit-date.outputs.data }}
         run: |
+          git -C heartbeat pull -no-rebase
           git -C heartbeat add .
           git -C heartbeat commit -m "updated latest for hearts/${{ matrix.hearts.heart }}"
           git -C heartbeat push
