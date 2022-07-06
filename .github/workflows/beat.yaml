@@ -14,14 +14,16 @@ jobs:
       id: is-heartbeat-issue
       run: |
         if [[ '${{ github.event.issue.title }}' =~ ^Request[:space:]heartbeat[:space:]for[:space:](.*)/(.*)$ ]]; then
-            echo ::set-output name=data::true
-            echo ${BASH_REMATCH[1]}${BASH_REMATCH[2]}
+            echo ::set-output name=flag::true
+            echo ::set-output name=owner::${BASH_REMATCH[1]}
+            echo ::set-output name=name::${BASH_REMATCH[2]}
         fi
+    - name: Print
+      run: |
+        echo ${{ steps.is-heartbeat-issue.output.flag }}
+        echo ${{ steps.is-heartbeat-issue.output.owner }}
+        echo ${{ steps.is-heartbeat-issue.output.name }}
     - name: Print comment body
       run: echo "$BODY"
       env:
         BODY: ${{ github.event.comment.body }}
-    - name: Print issue title
-      run: echo "$TITLE"
-      env:
-        TITLE: ${{ github.event.issue.title }}
