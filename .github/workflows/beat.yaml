@@ -1,4 +1,4 @@
-name: Like pizza
+name: Beat when commit has been made
 
 on:
   issue_comment:
@@ -17,4 +17,4 @@ jobs:
     - name: Print issue title
       run: echo "$TITLE"
       env:
-        TITLE: ${{ toJson(github.event.comment.issue) }}
+        TITLE: ${{ github.event.comment.issue.title }}
