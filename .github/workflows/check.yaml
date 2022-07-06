@@ -35,7 +35,8 @@ jobs:
         hearts: "${{ fromJSON(needs.matrix.outputs.hearts-matrix) }}"
 
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout heartbeat
+        uses: actions/checkout@v3
         with:
           path: 'heartbeat'
       - name: read owner
@@ -52,18 +53,27 @@ jobs:
           key-path: '["name"]'
       - name: show
         run: echo "${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}"
-      - uses: actions/checkout@v3
+      - name: checkout the hearts repo
+        uses: actions/checkout@v3
         with:
           repository: '${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}'
           path: 'repo'
-      - id: latest-commit-date
-        run: echo "::set-output name=date::$(git -C repo log -1 --date=format:'%Y-%m-%d' --format='%ad')"
-      - run: echo ${{ steps.latest-commit-date.outputs.date }}
-      - uses: actions-cool/issues-helper@v3
-        id: latest-issue-date
+      - name: read latest commit date
+        id: latest-commit-date
+        run: echo "::set-output name=data::$(git -C repo log -1 --date=format:'%Y-%m-%d' --format='%ad')"
+      - name: read latest heartbeat
+        id: latest
+        uses: KJ002/read-yaml@main
         with:
-          actions: 'find-issues'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-creator: 'kevinboss'
-          title-includes: '${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}'
-      - run: echo ${{ fromJSON(steps.latest-issue-date.outputs.issues) }}
+          file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
+          key-path: '["latest"]'
+      - run: echo ${{ steps.latest.outputs.data }}
+      - name: update latest
+        if: ${{ steps.latest.outputs.data == null || steps.latest.outputs.data < latest-commit-date.outputs.data }}
+        uses: endaft/action-yamler@v1.0.5
+        with:
+          file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
+          path: latest
+          set: latest-commit-date.outputs.data
+          get: false
+          append: false
