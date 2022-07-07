@@ -42,7 +42,7 @@ jobs:
           path: 'heartbeat'
       - name: Read heart 
         id: heart
-        uses: the-coding-turtle/ga-yaml-parser@v0.1
+        uses: the-coding-turtle/ga-yaml-parser@ v0.1.2
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
       - name: Checkout ${{ steps.heart.outputs.owner }}/${{ steps.heart.outputs.name }}
@@ -55,7 +55,7 @@ jobs:
         run: echo "::set-output name=data::$(git -C repo log -1 --date=format:'%Y-%m-%d' --format='%ad')"
       - name: Read beats 
         id: beats
-        uses: the-coding-turtle/ga-yaml-parser@v0.1
+        uses: the-coding-turtle/ga-yaml-parser@ v0.1.2
         with:
           file: 'heartbeat/beats.yaml'
           key: '${{ steps.heart.outputs.owner }}_${{ steps.heart.outputs.name }}'
