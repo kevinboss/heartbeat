@@ -71,11 +71,9 @@ jobs:
         run: |
           if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
             echo ::set-output name=flag::true
-          fi
-          if [[ ${{ steps.latest.outputs.data }} < ${{ steps.latest-commit-date.outputs.data }} ]] ; then 
+          elif [[ ${{ steps.latest.outputs.data }} < "${{ steps.latest-commit-date.outputs.data }}" ]] ; then 
             echo ::set-output name=flag::true
-          fi
-          if [[ ${{ steps.latest.outputs.data }} >= ${{ steps.latest-commit-date.outputs.data }} ]] ; then 
+          else
             echo ::set-output name=flag::false
           fi
       - name: Update latest
