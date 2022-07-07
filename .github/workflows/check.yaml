@@ -77,7 +77,7 @@ jobs:
             echo ::set-output name=flag::false
           fi
       - name: Update latest
-        if: ${{ steps.latest-must-be-updated.output.flag == 'true' }}
+        if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
         uses: endaft/action-yamler@v1.0.5
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
@@ -86,7 +86,7 @@ jobs:
           get: false
           append: false
       - name: Set global git config
-        if: ${{ steps.latest-must-be-updated.output.flag == 'true' }}
+        if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
         uses: oleksiyrudenko/gha-git-credentials@v2.1
         with:
           global: true
@@ -95,7 +95,7 @@ jobs:
           actor: 'kevinboss'
           token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Commit updated files
-        if: ${{ steps.latest-must-be-updated.output.flag == 'true' }}
+        if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
         run: |
           git -C heartbeat pull --no-rebase
           git -C heartbeat add .
