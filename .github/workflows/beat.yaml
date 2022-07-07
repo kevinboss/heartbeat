@@ -18,12 +18,11 @@ jobs:
           echo ::set-output name=owner::${BASH_REMATCH[1]}
           echo ::set-output name=name::${BASH_REMATCH[2]}
         fi
+    - name: Is beat comment
+      id: is-beat-comment
+      if: ${{ github.event.comment.body == '#beat' }}
+      run: echo ::set-output name=flag::true
     - name: Print
+      if: ${{ steps.is-heartbeat-issue.outputs.flag == 'true' && steps.is-beat-comment.outputs.flag == 'true' }}
       run: |
-        echo ${{ steps.is-heartbeat-issue.outputs.flag }}
-        echo ${{ steps.is-heartbeat-issue.outputs.owner }}
-        echo ${{ steps.is-heartbeat-issue.outputs.name }}
-    - name: Print comment body
-      run: echo "$BODY"
-      env:
-        BODY: ${{ github.event.comment.body }}
+        grep -o -a -m 1 -h -r "owner: {{" /path/to/dir | head -1
