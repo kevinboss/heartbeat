@@ -62,9 +62,9 @@ jobs:
       - name: Check if latest must be updated
         id: latest-must-be-updated
         run: |
-          if [[ ${{ steps.beats.outputs.result }} == "" ]] ; then 
+          if [[ "${{ steps.beats.outputs.result }}" == "" ]] ; then 
             echo ::set-output name=flag::true
-          elif [[ ${{ steps.beats.outputs.result }} < "${{ steps.latest-commit-date.outputs.data }}" ]] ; then 
+          elif [[ "${{ steps.beats.outputs.result }}" < "${{ steps.latest-commit-date.outputs.data }}" ]] ; then 
             echo ::set-output name=flag::true
           else
             echo ::set-output name=flag::false
