@@ -40,38 +40,31 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: 'heartbeat'
-      - name: Read owner from ${{ matrix.hearts.heart }}
-        id: owner
-        uses: KJ002/read-yaml@main
+      - name: Read heart 
+        id: heart
+        uses: the-coding-turtle/ga-yaml-parser@v0.1
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
-          key-path: '["owner"]'
-      - name: Read name from ${{ matrix.hearts.heart }}
-        id: name
-        uses: KJ002/read-yaml@main
-        with:
-          file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
-          key-path: '["name"]'
-      - name: Checkout ${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}
+      - name: Checkout ${{ steps.heart.outputs.owner }}/${{ steps.heart.outputs.name }}
         uses: actions/checkout@v3
         with:
-          repository: '${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}'
+          repository: '${{ steps.heart.outputs.owner }}/${{ steps.heart.outputs.name }}'
           path: 'repo'
       - name: Read latest commit date
         id: latest-commit-date
         run: echo "::set-output name=data::$(git -C repo log -1 --date=format:'%Y-%m-%d' --format='%ad')"
-      - name: Read latest from ${{ matrix.hearts.heart }}
-        id: latest
-        uses: KJ002/read-yaml@1.6
+      - name: Read beats 
+        id: beats
+        uses: the-coding-turtle/ga-yaml-parser@v0.1
         with:
           file: 'heartbeat/beats.yaml'
-          key-path: '["${{ steps.owner.outputs.data }}", "${{ steps.name.outputs.data }}"]'
+          key: '${{ steps.heart.outputs.owner }}_${{ steps.heart.outputs.name }}'
       - name: Check if latest must be updated
         id: latest-must-be-updated
         run: |
-          if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
+          if [[ ${{ steps.beats.outputs.result }} == "" ]] ; then 
             echo ::set-output name=flag::true
-          elif [[ ${{ steps.latest.outputs.data }} < "${{ steps.latest-commit-date.outputs.data }}" ]] ; then 
+          elif [[ ${{ steps.beats.outputs.result }} < "${{ steps.latest-commit-date.outputs.data }}" ]] ; then 
             echo ::set-output name=flag::true
           else
             echo ::set-output name=flag::false
@@ -81,7 +74,7 @@ jobs:
         uses: endaft/action-yamler@v1.0.5
         with:
           file: 'heartbeat/beats.yaml'
-          path: ${{ steps.owner.outputs.data }}.${{ steps.name.outputs.data }}
+          path: ${{ steps.heart.outputs.owner }}.${{ steps.heart.outputs.name }}
           set: ${{ steps.latest-commit-date.outputs.data }}
           get: false
           append: false
