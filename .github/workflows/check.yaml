@@ -62,12 +62,24 @@ jobs:
         run: echo "::set-output name=data::$(git -C repo log -1 --date=format:'%Y-%m-%d' --format='%ad')"
       - name: Read latest from ${{ matrix.hearts.heart }}
         id: latest
-        uses: KJ002/read-yaml@main
+        uses: KJ002/read-yaml@1.6
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
           key-path: '["latest"]'
+      - name: Check if latest must be updated
+        id: latest-must-be-updated
+        run: |
+          if [[ ${{ steps.latest.outputs.data }}  ]] ; then 
+            echo ::set-output name=flag::true
+          fi
+          if [[ ${{ steps.latest.outputs.data }} < ${{ steps.latest-commit-date.outputs.data }} ]] ; then 
+            echo ::set-output name=flag::true
+          fi
+          if [[ ${{ steps.latest.outputs.data }} >= ${{ steps.latest-commit-date.outputs.data }} ]] ; then 
+            echo ::set-output name=flag::false
+          fi
       - name: Update latest
-        if: ${{ steps.latest.outputs.data == null || steps.latest.outputs.data < steps.latest-commit-date.outputs.data }}
+        if: ${{ steps.latest-must-be-updated.output.flat == 'true' }}
         uses: endaft/action-yamler@v1.0.5
         with:
           file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
@@ -76,6 +88,7 @@ jobs:
           get: false
           append: false
       - name: Set global git config
+        if: ${{ steps.latest-must-be-updated.output.flat == 'true' }}
         uses: oleksiyrudenko/gha-git-credentials@v2.1
         with:
           global: true
@@ -84,7 +97,7 @@ jobs:
           actor: 'kevinboss'
           token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Commit updated files
-        if: ${{ steps.latest.outputs.data == null || steps.latest.outputs.data < steps.latest-commit-date.outputs.data }}
+        if: ${{ steps.latest-must-be-updated.output.flat == 'true' }}
         run: |
           git -C heartbeat pull --no-rebase
           git -C heartbeat add .
