@@ -65,7 +65,7 @@ jobs:
         uses: KJ002/read-yaml@1.6
         with:
           file: 'heartbeat/beats.yaml'
-          key-path: '["${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}"]'
+          key-path: '["${{ steps.owner.outputs.data }}.${{ steps.name.outputs.data }}"]'
       - name: Check if latest must be updated
         id: latest-must-be-updated
         run: |
@@ -81,7 +81,7 @@ jobs:
         uses: endaft/action-yamler@v1.0.5
         with:
           file: 'heartbeat/beats.yaml'
-          path: ${{ steps.owner.outputs.data }}/${{ steps.name.outputs.data }}
+          path: ${{ steps.owner.outputs.data }}.${{ steps.name.outputs.data }}
           set: ${{ steps.latest-commit-date.outputs.data }}
           get: false
           append: false
