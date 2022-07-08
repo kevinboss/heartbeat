@@ -22,7 +22,51 @@ jobs:
       id: is-beat-comment
       if: ${{ github.event.comment.body == '#beat' }}
       run: echo ::set-output name=flag::true
-    - name: Print
+    - name: Checkout kevinboss/heartbeat
       if: ${{ steps.is-heartbeat-issue.outputs.flag == 'true' && steps.is-beat-comment.outputs.flag == 'true' }}
+      uses: actions/checkout@v3
+      with:
+        path: 'heartbeat'
+    - name: Read latest
+      if: ${{ steps.is-heartbeat-issue.outputs.flag == 'true' && steps.is-beat-comment.outputs.flag == 'true' }}
+      id: latest
+      uses: KJ002/read-yaml@1.6
+      with:
+        file: 'heartbeat/beats.yaml'
+        key-path: '["${{ steps.heart.outputs.owner }}", "${{ steps.heart.outputs.name }}"]'
+    - name: Check if latest must be updated
+      if: ${{ steps.is-heartbeat-issue.outputs.flag == 'true' && steps.is-beat-comment.outputs.flag == 'true' }}
+      id: latest-must-be-updated
       run: |
-        grep -o -a -m 1 -h -r "owner: {{" /path/to/dir | head -1
+        if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
+          echo ::set-output name=flag::true
+        elif [[ ${{ steps.latest.outputs.data }} < "${{ github.event.comment.created_at }}" ]] ; then 
+          echo ::set-output name=flag::true
+        else
+          echo ::set-output name=flag::false
+        fi
+    - name: Update latest
+      if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
+      uses: endaft/action-yamler@v1.0.5
+      with:
+        file: 'heartbeat/beats.yaml'
+        path: ${{ steps.heart.outputs.owner }}.${{ steps.heart.outputs.name }}
+        set: ${{ github.event.comment.created_at }}
+        get: false
+        append: false
+    - name: Set global git config
+      if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
+      uses: oleksiyrudenko/gha-git-credentials@v2.1
+      with:
+        global: true
+        name: 'Kevin Boss'
+        email: 'kevin.boss@outlook.com'
+        actor: 'kevinboss'
+        token: '${{ secrets.GITHUB_TOKEN }}'
+    - name: Commit updated files
+      if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
+      run: |
+        git -C heartbeat pull --rebase
+        git -C heartbeat add .
+        git -C heartbeat commit -m "updated beats.yaml"
+        git -C heartbeat push
