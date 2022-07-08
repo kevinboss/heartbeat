@@ -90,7 +90,7 @@ jobs:
       - name: Commit updated files
         if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
         run: |
-          git -C heartbeat pull --rebase
           git -C heartbeat add .
           git -C heartbeat commit -m "updated beats.yaml"
+          git -C heartbeat pull --rebase
           git -C heartbeat push
