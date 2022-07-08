@@ -58,7 +58,7 @@ jobs:
         uses: KJ002/read-yaml@1.6
         with:
           file: 'heartbeat/beats.yaml'
-          key: '["${{ steps.heart.outputs.owner }}", "${{ steps.heart.outputs.name }}"]'
+          key-path: '["${{ steps.heart.outputs.owner }}", "${{ steps.heart.outputs.name }}"]'
       - name: Check if latest must be updated
         id: latest-must-be-updated
         run: |
