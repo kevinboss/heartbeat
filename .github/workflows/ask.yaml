@@ -55,12 +55,13 @@ jobs:
         run: |
           if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
             echo ::set-output name=flag::false
-          elif [[ $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > -1 ]] ; then 
+          elif [[ $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 30 ]] ; then 
             echo ::set-output name=flag::true
           else
             echo ::set-output name=flag::false
           fi
       - name: Create request for beat issue
+        if: ${{ steps.ask-for-a-beat.flag == 'true' }}
         uses: JasonEtco/create-an-issue@v2
         with:
           filename: heartbeat/.github/ISSUE_TEMPLATE/ask_for_beat.md
