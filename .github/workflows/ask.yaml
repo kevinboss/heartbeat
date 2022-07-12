@@ -55,7 +55,7 @@ jobs:
         run: |
           if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
             echo ::set-output name=flag::false
-          elif [[ $(( ($(date +%s) - $(date -d steps.latest.outputs.data +%s)) / 86400 )) > -1 ]] ; then 
+          elif [[ $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > -1 ]] ; then 
             echo ::set-output name=flag::true
           else
             echo ::set-output name=flag::false
