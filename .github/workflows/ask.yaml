@@ -63,7 +63,7 @@ jobs:
       - name: Create request for beat issue
         uses: JasonEtco/create-an-issue@v2
         with:
-          filename: .github/ISSUE_TEMPLATE/ask_for_beat.md
+          filename: heartbeat/.github/ISSUE_TEMPLATE/ask_for_beat.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ steps.heart.outputs.owner }}
