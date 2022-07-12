@@ -1,0 +1,70 @@
+name: Ask for beat when latest beast has been long ago
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      hearts-matrix: "${{ steps.hearts.outputs.matrix }}"
+    steps:
+      - name: Checkout kevinboss/heartbeat
+        uses: actions/checkout@v3
+      - uses: nahsi/files-to-matrix@v1
+        id: hearts
+        with:
+          files: hearts/**
+          settings: >-
+            [
+              {
+                "name": "heart",
+                "level": 1
+              }
+            ]
+
+  ask:
+    runs-on: ubuntu-latest
+    if: needs.matrix.outputs.hearts-matrix
+    needs: matrix
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        hearts: "${{ fromJSON(needs.matrix.outputs.hearts-matrix) }}"
+    steps:
+      - name: Checkout kevinboss/heartbeat
+        uses: actions/checkout@v3
+        with:
+          path: 'heartbeat'
+      - name: Read heart 
+        id: heart
+        uses: the-coding-turtle/ga-yaml-parser@v0.1.2
+        with:
+          file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
+      - name: Read latest
+        id: latest
+        uses: KJ002/read-yaml@1.6
+        with:
+          file: 'heartbeat/beats.yaml'
+          key-path: '["${{ steps.heart.outputs.owner }}", "${{ steps.heart.outputs.name }}"]'
+      - name: Check if latest must be updated
+        id: ask-for-a-beat
+        run: |
+          if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
+            echo ::set-output name=flag::false
+          elif [[ $(( ($(date +%s) - $(date -d steps.latest.outputs.data +%s)) / 86400 )) > -1 ]] ; then 
+            echo ::set-output name=flag::true
+          else
+            echo ::set-output name=flag::false
+          fi
+      - name: Create request for beat issue
+        uses: JasonEtco/create-an-issue@v2
+        with:
+          filename: .github/ISSUE_TEMPLATE/ask_for_beat.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ steps.heart.outputs.owner }}
+          NAME: ${{ steps.heart.outputs.name }}
