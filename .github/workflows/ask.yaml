@@ -65,6 +65,9 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         with:
           filename: heartbeat/.github/ISSUE_TEMPLATE/ask_for_beat.md
+          assignees: ${{ steps.heart.outputs.owner }}
+          update_existing: false
+          search_existing: open
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ steps.heart.outputs.owner }}
