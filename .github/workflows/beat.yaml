@@ -70,3 +70,9 @@ jobs:
         git -C heartbeat commit -m "updated beats.yaml"
         git -C heartbeat pull --rebase
         git -C heartbeat push
+    - name: Delete issue
+      if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
+      uses: vtcaregorodtcev/delete-issue@main
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        issue_node_id: ${{ github.event.issue.node_id }}
