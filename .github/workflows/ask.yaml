@@ -61,7 +61,7 @@ jobs:
             echo ::set-output name=flag::false
           fi
       - name: Create request for beat issue
-        if: ${{ steps.ask-for-a-beat.flag == 'true' }}
+        if: ${{ steps.ask-for-a-beat.outputs.flag == 'true' }}
         uses: JasonEtco/create-an-issue@v2
         with:
           filename: heartbeat/.github/ISSUE_TEMPLATE/ask_for_beat.md
