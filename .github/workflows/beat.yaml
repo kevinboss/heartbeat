@@ -74,5 +74,5 @@ jobs:
       if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
       uses: vtcaregorodtcev/delete-issue@main
       with:
-        github_token: ${{ secrets.PERSONAL_TOKEN }}
+        github_token: ${{ secrets.ACCESS_TOKEN }}
         issue_node_id: ${{ github.event.issue.node_id }}
