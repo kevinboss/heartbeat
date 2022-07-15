@@ -80,4 +80,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4.14.1
         with:
           repository: 'heartbeat/'
-          commit_message: 'Updated badge for ${{ steps.is-heartbeat-issue.outputs.owner }}/${{ steps.is-heartbeat-issue.outputs.name }}'
+          commit_message: 'Updated badge for ${{ steps.heart.outputs.owner }}/${{ steps.heart.outputs.name }}'
