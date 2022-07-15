@@ -1,0 +1,80 @@
+name: Generate batches
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      hearts-matrix: "${{ steps.hearts.outputs.matrix }}"
+    steps:
+      - name: Checkout kevinboss/heartbeat
+        uses: actions/checkout@v3
+      - uses: nahsi/files-to-matrix@v1
+        id: hearts
+        with:
+          files: hearts/**
+          settings: >-
+            [
+              {
+                "name": "heart",
+                "level": 1
+              }
+            ]
+
+  check:
+    runs-on: ubuntu-latest
+    if: needs.matrix.outputs.hearts-matrix
+    needs: matrix
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        hearts: "${{ fromJSON(needs.matrix.outputs.hearts-matrix) }}"
+
+    steps:
+      - name: Checkout kevinboss/heartbeat
+        uses: actions/checkout@v3
+        with:
+          path: 'heartbeat'
+      - name: Read heart 
+        id: heart
+        uses: the-coding-turtle/ga-yaml-parser@v0.1.2
+        with:
+          file: 'heartbeat/hearts/${{ matrix.hearts.heart }}'
+      - name: Read latest
+        id: latest
+        uses: KJ002/read-yaml@1.6
+        with:
+          file: 'heartbeat/beats.yaml'
+          key-path: '["${{ steps.heart.outputs.owner }}", "${{ steps.heart.outputs.name }}"]'
+      - name: Get bade data
+        id: bade-data
+        run: |
+          if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
+            echo ::set-output name=label::none
+            echo ::set-output name=color::red
+          elif [[ $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 60 ]] ; then 
+            echo ::set-output name=label::none
+            echo ::set-output name=color::red
+          elif [[ $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 30 ]] ; then 
+            echo ::set-output name=label::weak
+            echo ::set-output name=color::orange
+          else
+            echo ::set-output name=label::strong
+            echo ::set-output name=color::green
+          fi
+      - name: Generate labels
+        uses: emibcn/badge-action@v1.2.1
+        with:
+          label: 'Heartbeat'
+          status: ${{ steps.bade-data.outputs.label }}
+          color: ${{ steps.bade-data.outputs.color }}
+          path: 'heartbeat/.github/badges/${{ steps.heart.outputs.owner }}_${{ steps.heart.outputs.name }}.svg'
+      - name: Commit updated files
+        uses: stefanzweifel/git-auto-commit-action@v4.14.1
+        with:
+          repository: 'heartbeat/'
