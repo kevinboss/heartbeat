@@ -70,7 +70,7 @@ jobs:
       - name: Create destination directory
         run: mkdir -p "heartbeat/badges/"
       - name: Generate labels
-        uses: emibcn/badge-action@v1.2.1
+        uses: emibcn/badge-action@v1.2.4
         with:
           label: 'Heartbeat'
           status: ${{ steps.bade-data.outputs.label }}
