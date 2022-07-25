@@ -57,10 +57,10 @@ jobs:
           if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
             echo ::set-output name=label::none
             echo ::set-output name=color::red
-          elif [[ $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 60 ]] ; then 
+          elif (( $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 60 )) ; then 
             echo ::set-output name=label::none
             echo ::set-output name=color::red
-          elif [[ $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 30 ]] ; then 
+          elif (( $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 30 )) ; then 
             echo ::set-output name=label::weak
             echo ::set-output name=color::orange
           else
