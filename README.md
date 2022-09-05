@@ -2,7 +2,7 @@
 
 ## What is it
 
-Is that repo dead, is the mantainer still responding to issues? Can I safely use this dependency?
+Is that repo dead, is the maintainer still responding to issues? Can I safely use this dependency?
 
 Sometimes something hasn't been abandoned, it is just complete or doesn't need a lot of maintenance. How do you communicate to your users that you are still here? Hearbeats aim is to provide a way to signal that a maintainer is still here while not creating unnecessary features or just empy commits.
 
