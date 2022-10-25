@@ -61,7 +61,7 @@ jobs:
         github_token: ${{ secrets.ACCESS_TOKEN }}
         issue_node_id: ${{ github.event.issue.node_id }}
     - name: Commit updated files
-      uses: stefanzweifel/git-auto-commit-action@v4.15.1
+      uses: stefanzweifel/git-auto-commit-action@v4.15.2
       with:
         repository: 'heartbeat/'
         commit_message: 'Updated ${{ steps.is-heartbeat-issue.outputs.owner }}.${{ steps.is-heartbeat-issue.outputs.name }} in beat.yaml'
