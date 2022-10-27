@@ -79,7 +79,7 @@ jobs:
           get: false
           append: false
       - name: Commit updated files
-        uses: stefanzweifel/git-auto-commit-action@v4.15.2
+        uses: stefanzweifel/git-auto-commit-action@v4.15.3
         with:
           repository: 'heartbeat/'
           commit_message: 'Updated ${{ steps.heart.outputs.owner }}.${{ steps.heart.outputs.name }} in beat.yaml'
