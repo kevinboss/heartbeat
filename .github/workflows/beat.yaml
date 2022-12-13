@@ -14,14 +14,14 @@ jobs:
       id: is-heartbeat-issue
       run: |
         if [[ '${{ github.event.issue.title }}' =~ ^Request[[:space:]]heartbeat[[:space:]]for[[:space:]](.*)/(.*)$ ]]; then
-          echo ::set-output name=flag::true
-          echo ::set-output name=owner::${BASH_REMATCH[1]}
-          echo ::set-output name=name::${BASH_REMATCH[2]}
+          echo "{flag}={true}" >> $GITHUB_OUTPUT
+          echo "{owner}={${BASH_REMATCH[1]}}" >> $GITHUB_OUTPUT
+          echo "{name}={${BASH_REMATCH[2]}}" >> $GITHUB_OUTPUT
         fi
     - name: Is beat comment
       id: is-beat-comment
       if: ${{ github.event.comment.body == '#beat' }}
-      run: echo ::set-output name=flag::true
+      run: echo "{flag}={true}" >> $GITHUB_OUTPUT
     - name: Checkout kevinboss/heartbeat
       if: ${{ steps.is-heartbeat-issue.outputs.flag == 'true' && steps.is-beat-comment.outputs.flag == 'true' }}
       uses: actions/checkout@v3
@@ -39,11 +39,11 @@ jobs:
       id: latest-must-be-updated
       run: |
         if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
-          echo ::set-output name=flag::true
+          echo "{flag}={true}" >> $GITHUB_OUTPUT
         elif [[ ${{ steps.latest.outputs.data }} < "${{ github.event.comment.created_at }}" ]] ; then 
-          echo ::set-output name=flag::true
+          echo "{flag}={true}" >> $GITHUB_OUTPUT
         else
-          echo ::set-output name=flag::false
+          echo "{flag}={false}" >> $GITHUB_OUTPUT
         fi
     - name: Update latest
       if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
