@@ -55,17 +55,17 @@ jobs:
         id: bade-data
         run: |
           if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
-            echo ::set-output name=label::none
-            echo ::set-output name=color::red
+            echo "{label}={none}" >> $GITHUB_OUTPUT
+            echo "{color}={red}" >> $GITHUB_OUTPUT
           elif (( $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 60 )) ; then 
-            echo ::set-output name=label::none
-            echo ::set-output name=color::red
-          elif (( $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 30 )) ; then 
-            echo ::set-output name=label::weak
-            echo ::set-output name=color::orange
+            echo "{label}={none}" >> $GITHUB_OUTPUT
+            echo "{color}={red}" >> $GITHUB_OUTPUT
+          elif (( $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 30 )) ; then
+            echo "{label}={weak}" >> $GITHUB_OUTPUT
+            echo "{color}={orange}" >> $GITHUB_OUTPUT
           else
-            echo ::set-output name=label::strong
-            echo ::set-output name=color::green
+            echo "{label}={strong}" >> $GITHUB_OUTPUT
+            echo "{color}={green}" >> $GITHUB_OUTPUT
           fi
       - name: Create destination directory
         run: mkdir -p "heartbeat/badges/"
