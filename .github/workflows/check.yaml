@@ -78,6 +78,8 @@ jobs:
           set: ${{ steps.latest-commit-date.outputs.data }}
           get: false
           append: false
+      - name: Pull
+        run: git -C heartbeat pull
       - name: Commit updated files
         uses: stefanzweifel/git-auto-commit-action@v4.16.0
         with:
