@@ -52,7 +52,7 @@ jobs:
           path: 'repo'
       - name: Read latest commit date
         id: latest-commit-date
-        run: echo "::set-output name=data::$(git -C repo log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format='%ad')"
+        run: echo "{data}={'$(git -C repo log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format='%ad')'}" >> $GITHUB_OUTPUT
       - name: Read latest
         id: latest
         uses: KJ002/read-yaml@1.6
