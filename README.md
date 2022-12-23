@@ -1,7 +1,5 @@
 ![heartbeat](https://socialify.git.ci/kevinboss/heartbeat/image?font=Bitter&logo=https%3A%2F%2Fi.imgur.com%2FQOdFUxC.png&name=1&pattern=Solid&theme=Light)
 
-# heartbeat
-
 ## What is it
 
 Is that repo dead, is the maintainer still responding to issues? Can I safely use this dependency?
