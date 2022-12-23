@@ -73,7 +73,7 @@ jobs:
           fi
       - name: Update latest
         if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
-        uses: endaft/action-yamler@v1.0.10
+        uses: endaft/action-yamler@v1.1.0
         with:
           file: 'heartbeat/beats.yaml'
           path: ${{ steps.heart.outputs.owner }}.${{ steps.heart.outputs.name }}
