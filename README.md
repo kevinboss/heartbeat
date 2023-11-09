@@ -29,7 +29,3 @@ Heartbeat will do the rest, keeping your project's pulse visible to all.
 ## Contributing
 
 Contributions are welcome! Feel free to open an issue or submit a pull request.
-
----
-
-Powered by Heartbeat. Keep your project's pulse alive.
