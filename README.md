@@ -1,6 +1,4 @@
-# Heartbeat
-
-Heartbeat ensures your project's pulse is felt. It's a badge of activity for maintainers to communicate their presence.
+![heartbeat](https://socialify.git.ci/kevinboss/heartbeat/image?font=Bitter&logo=https%3A%2F%2Fi.imgur.com%2FQOdFUxC.png&name=1&pattern=Solid&theme=Light)
 
 ## What is Heartbeat?
 
