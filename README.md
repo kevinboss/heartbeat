@@ -22,7 +22,7 @@ In the open-source realm, the silence in a repository often leads to the looming
 
 1. Fork or clone this repository.
 2. Add the Heartbeat YAML configuration file to your `./hearts` directory.
-3. Commit the file to your repository.
+3. Create a PR for this repo or host it on your own.
 
 Heartbeat will do the rest, keeping your project's pulse visible to all.
 
