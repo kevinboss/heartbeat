@@ -24,7 +24,7 @@ jobs:
       run: echo "flag=true" >> $GITHUB_OUTPUT
     - name: Checkout kevinboss/heartbeat
       if: ${{ steps.is-heartbeat-issue.outputs.flag == 'true' && steps.is-beat-comment.outputs.flag == 'true' }}
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         path: 'heartbeat'
     - name: Pull

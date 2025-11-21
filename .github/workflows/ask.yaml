@@ -12,7 +12,7 @@ jobs:
       hearts-matrix: "${{ steps.hearts.outputs.matrix }}"
     steps:
       - name: Checkout kevinboss/heartbeat
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: nahsi/files-to-matrix@v1
         id: hearts
         with:
@@ -36,7 +36,7 @@ jobs:
         hearts: "${{ fromJSON(needs.matrix.outputs.hearts-matrix) }}"
     steps:
       - name: Checkout kevinboss/heartbeat
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: 'heartbeat'
       - name: Pull
