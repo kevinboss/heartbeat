@@ -81,7 +81,7 @@ jobs:
       - name: Pull
         run: git -C heartbeat pull
       - name: Commit updated files
-        uses: stefanzweifel/git-auto-commit-action@v5.1.0
+        uses: stefanzweifel/git-auto-commit-action@v7.1.0
         with:
           repository: 'heartbeat/'
           commit_message: 'Updated badge for ${{ steps.heart.outputs.owner }}/${{ steps.heart.outputs.name }}'
