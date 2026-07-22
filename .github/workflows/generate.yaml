@@ -56,13 +56,13 @@ jobs:
       - name: Get bade data
         id: bade-data
         run: |
-          if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
+          if [[ "${{ steps.latest.outputs.data }}" == "" ]] ; then
             echo "label=none" >> $GITHUB_OUTPUT
             echo "color=red" >> $GITHUB_OUTPUT
-          elif (( $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 60 )) ; then 
+          elif (( $(( ($(date +%s) - $(date -d "${{ steps.latest.outputs.data }}" +%s)) / 86400 )) > 60 )) ; then
             echo "label=none" >> $GITHUB_OUTPUT
             echo "color=red" >> $GITHUB_OUTPUT
-          elif (( $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 30 )) ; then
+          elif (( $(( ($(date +%s) - $(date -d "${{ steps.latest.outputs.data }}" +%s)) / 86400 )) > 30 )) ; then
             echo "label=weak" >> $GITHUB_OUTPUT
             echo "color=orange" >> $GITHUB_OUTPUT
           else

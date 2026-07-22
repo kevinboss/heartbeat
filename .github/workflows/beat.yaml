@@ -40,9 +40,9 @@ jobs:
       if: ${{ steps.is-heartbeat-issue.outputs.flag == 'true' && steps.is-beat-comment.outputs.flag == 'true' }}
       id: latest-must-be-updated
       run: |
-        if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
+        if [[ "${{ steps.latest.outputs.data }}" == "" ]] ; then
           echo "flag=true" >> $GITHUB_OUTPUT
-        elif [[ ${{ steps.latest.outputs.data }} < "${{ github.event.comment.created_at }}" ]] ; then 
+        elif [[ "${{ steps.latest.outputs.data }}" < "${{ github.event.comment.created_at }}" ]] ; then
           echo "flag=true" >> $GITHUB_OUTPUT
         else
           echo "flag=false" >> $GITHUB_OUTPUT

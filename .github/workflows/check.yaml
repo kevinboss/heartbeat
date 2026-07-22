@@ -64,9 +64,9 @@ jobs:
       - name: Check if latest must be updated
         id: latest-must-be-updated
         run: |
-          if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
+          if [[ "${{ steps.latest.outputs.data }}" == "" ]] ; then
             echo "flag=true" >> $GITHUB_OUTPUT
-          elif [[ ${{ steps.latest.outputs.data }} < "${{ steps.latest-commit-date.outputs.data }}" ]] ; then 
+          elif [[ "${{ steps.latest.outputs.data }}" < "${{ steps.latest-commit-date.outputs.data }}" ]] ; then
             echo "flag=true" >> $GITHUB_OUTPUT
           else
             echo "flag=false" >> $GITHUB_OUTPUT
