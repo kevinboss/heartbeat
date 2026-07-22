@@ -1,4 +1,15 @@
-![heartbeat](https://socialify.git.ci/kevinboss/heartbeat/image?font=Bitter&logo=https%3A%2F%2Fi.imgur.com%2FQOdFUxC.png&name=1&pattern=Solid&theme=Light)
+<p align="center">
+  <img src="https://socialify.git.ci/kevinboss/heartbeat/image?font=Bitter&logo=https%3A%2F%2Fi.imgur.com%2FQOdFUxC.png&name=1&pattern=Solid&theme=Light" alt="Heartbeat">
+</p>
+
+<p align="center">
+  A minimalist way for open-source maintainers to signal project vitality &mdash; a badge, not noise commits.
+</p>
+
+<p align="center">
+  <a href="https://github.com/kevinboss/heartbeat/actions/workflows/generate.yaml"><img src="https://github.com/kevinboss/heartbeat/actions/workflows/generate.yaml/badge.svg" alt="Generate badges"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/kevinboss/heartbeat" alt="License: GPL-3.0"></a>
+</p>
 
 ## What is Heartbeat?
 
