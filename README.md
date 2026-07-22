@@ -7,8 +7,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/kevinboss/heartbeat/actions/workflows/generate.yaml"><img src="https://github.com/kevinboss/heartbeat/actions/workflows/generate.yaml/badge.svg" alt="Generate badges"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/kevinboss/heartbeat" alt="License: GPL-3.0"></a>
+  <a href="https://github.com/kevinboss/heartbeat/actions/workflows/generate.yaml"><img src="https://img.shields.io/github/actions/workflow/status/kevinboss/heartbeat/generate.yaml?label=CI" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/kevinboss/heartbeat" alt="License"></a>
 </p>
 
 ## What is Heartbeat?
