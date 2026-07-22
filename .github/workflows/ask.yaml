@@ -55,9 +55,9 @@ jobs:
       - name: Check if latest must be updated
         id: ask-for-a-beat
         run: |
-          if [[ ${{ steps.latest.outputs.data }} == "" ]] ; then 
+          if [[ "${{ steps.latest.outputs.data }}" == "" ]] ; then
             echo "flag=false" >> $GITHUB_OUTPUT
-          elif (( $(( ($(date +%s) - $(date -d ${{ steps.latest.outputs.data }} +%s)) / 86400 )) > 30 )) ; then 
+          elif (( $(( ($(date +%s) - $(date -d "${{ steps.latest.outputs.data }}" +%s)) / 86400 )) > 30 )) ; then
             echo "flag=true" >> $GITHUB_OUTPUT
           else
             echo "flag=false" >> $GITHUB_OUTPUT
