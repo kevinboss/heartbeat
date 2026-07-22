@@ -49,13 +49,11 @@ jobs:
         fi
     - name: Update latest
       if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
-      uses: endaft/action-yamler@v1.1.1
-      with:
-        file: 'heartbeat/beats.yaml'
-        path: ${{ steps.is-heartbeat-issue.outputs.owner }}.${{ steps.is-heartbeat-issue.outputs.name }}
-        set: ${{ github.event.comment.created_at }}
-        get: false
-        append: false
+      env:
+        OWNER: ${{ steps.is-heartbeat-issue.outputs.owner }}
+        NAME: ${{ steps.is-heartbeat-issue.outputs.name }}
+        DATE: ${{ github.event.comment.created_at }}
+      run: yq -i '.[strenv(OWNER)][strenv(NAME)] = strenv(DATE)' heartbeat/beats.yaml
     - name: Delete issue
       if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
       uses: vtcaregorodtcev/delete-issue@main
@@ -63,7 +61,7 @@ jobs:
         github_token: ${{ secrets.ACCESS_TOKEN }}
         issue_node_id: ${{ github.event.issue.node_id }}
     - name: Commit updated files
-      uses: stefanzweifel/git-auto-commit-action@v7.1.0
+      uses: stefanzweifel/git-auto-commit-action@v7.2.0
       with:
         repository: 'heartbeat/'
         commit_message: 'Updated ${{ steps.is-heartbeat-issue.outputs.owner }}.${{ steps.is-heartbeat-issue.outputs.name }} in beat.yaml'

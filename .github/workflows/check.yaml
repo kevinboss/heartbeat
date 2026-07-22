@@ -73,17 +73,15 @@ jobs:
           fi
       - name: Update latest
         if: ${{ steps.latest-must-be-updated.outputs.flag == 'true' }}
-        uses: endaft/action-yamler@v1.1.1
-        with:
-          file: 'heartbeat/beats.yaml'
-          path: ${{ steps.heart.outputs.owner }}.${{ steps.heart.outputs.name }}
-          set: ${{ steps.latest-commit-date.outputs.data }}
-          get: false
-          append: false
+        env:
+          OWNER: ${{ steps.heart.outputs.owner }}
+          NAME: ${{ steps.heart.outputs.name }}
+          DATE: ${{ steps.latest-commit-date.outputs.data }}
+        run: yq -i '.[strenv(OWNER)][strenv(NAME)] = strenv(DATE)' heartbeat/beats.yaml
       - name: Pull
         run: git -C heartbeat pull
       - name: Commit updated files
-        uses: stefanzweifel/git-auto-commit-action@v7.1.0
+        uses: stefanzweifel/git-auto-commit-action@v7.2.0
         with:
           repository: 'heartbeat/'
           commit_message: 'Updated ${{ steps.heart.outputs.owner }}.${{ steps.heart.outputs.name }} in beat.yaml'
