@@ -13,17 +13,14 @@ jobs:
     steps:
       - name: Checkout kevinboss/heartbeat
         uses: actions/checkout@v7
-      - uses: nahsi/files-to-matrix@v1
+      # Was nahsi/files-to-matrix@v1: archived upstream, and it fetched
+      # deno.land/std at run time, which failed intermittently.
+      - name: Build hearts matrix
         id: hearts
-        with:
-          files: hearts/**
-          settings: >-
-            [
-              {
-                "name": "heart",
-                "level": 1
-              }
-            ]
+        run: |
+          matrix=$(ls -1 hearts | jq -Rsc 'split("\n") | map(select(length > 0) | {heart: .})')
+          if [ "$matrix" = "[]" ]; then matrix=; fi
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   ask:
     runs-on: ubuntu-latest
